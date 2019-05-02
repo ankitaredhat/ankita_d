@@ -1,0 +1,23 @@
+---
+ - hosts: client2.example.com
+   tasks:
+   - name: Installation of the packagae using yum
+     yum:
+      name: httpd
+      state: installed
+     tags: 
+       - installed
+   
+   - name: Ensure service is in running state
+     service:
+       name: httpd
+       state: started 
+     tags:
+       - Started
+
+   - name: Ensure service is stopped
+     service:
+       name: httpd
+       state: stopped
+     tags: 
+       - Stopped

@@ -1,0 +1,15 @@
+---
+ - hosts: client1.example.com
+   tasks:
+   - name: Use of Assert Function
+     shell: ls
+     register: files
+   - debug:
+      msg: "{{ files.stdout_lines }}"
+
+   - assert:
+      that:
+       - "'checkfile.txt' in files.stdout_lines"
+     
+    
+   

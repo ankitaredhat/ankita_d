@@ -1,0 +1,10 @@
+---
+ - hosts: client2.example.com
+   vars:
+     text: "This is the text to be copied\n"
+   tasks:
+   - name: Sample of copy module
+     copy:
+      dest: /root/folder7/copy
+      content: "{{ text }}"   
+
