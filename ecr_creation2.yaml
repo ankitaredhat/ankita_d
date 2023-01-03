@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Description: Elastic Container Registory Repository using Cloudformation
+
+#------------------------
+#   PARAMETERS
+#------------------------
+Parameters:
+  repoName: 
+    Description: test2-repository 
+    Type: String
+
+#------------------------
+#   RESOURCES
+#------------------------ 
+Resources:
+  ecrRepo:
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Sub ${repoName}-repo
+      ImageScanningConfiguration: 
+        ScanOnPush: true
+
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "ankita-s3bucket-v1"
+
+  MyTestRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - sagemaker.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: Role to provide access to S3 and Sagemaker
+      Policies:
+        - PolicyName: EmbeddedInlinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 'cloudformation:*'
+                Resource: '*'
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
+      RoleName: SagemakerS3FullAccess
+
+
